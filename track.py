@@ -105,12 +105,14 @@ def detect(opt):
         if img.ndimension() == 3:
             img = img.unsqueeze(0)
         t2 = time_sync()
+
         dt[0] += t2 - t1
 
         # Inference
         visualize = increment_path(save_dir / Path(path).stem, mkdir=True) if opt.visualize else False
         pred = model(img, augment=opt.augment, visualize=visualize)
         t3 = time_sync()
+
         dt[1] += t3 - t2
 
         # Apply NMS
@@ -215,7 +217,7 @@ if __name__ == '__main__':
     parser.add_argument('--yolo_weights', nargs='+', type=str, default='yolov5s.pt', help='model.pt path(s)')
     parser.add_argument('--deep_sort_weights', type=str, default='deep_sort_pytorch/deep_sort/deep/checkpoint/ckpt.t7', help='ckpt.t7 path')
     # file/folder, 0 for webcam
-    parser.add_argument('--source', type=str, default='0', help='source')
+    parser.add_argument('--source', type=str, default='87901.mov', help='source')
     parser.add_argument('--output', type=str, default='inference/output', help='output folder')  # output folder
     parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[640], help='inference size h,w')
     parser.add_argument('--conf-thres', type=float, default=0.4, help='object confidence threshold')

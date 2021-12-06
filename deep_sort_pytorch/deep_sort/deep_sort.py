@@ -40,6 +40,7 @@ class DeepSort(object):
 
         # output bbox identities
         outputs = []
+        outputs_new = []
         for track in self.tracker.tracks:
             if not track.is_confirmed() or track.time_since_update > 1:
                 continue
@@ -52,10 +53,17 @@ class DeepSort(object):
             track_id = track.track_id
             class_id = track.class_id
             outputs.append(np.array([x1, y1, x2, y2, track_id, class_id], dtype=np.int))
+            # 计算底边中点坐标
+            x3 = (x1 + x2) / 2
+            outputs_new.append(np.array([x3, y2, track_id], dtype=np.int))
+            # 计算底边中点坐标
         if len(outputs) > 0:
             outputs = np.stack(outputs, axis=0)
+            # 计算底边中点坐标
+            outputs_new = np.stack(outputs_new, axis=0)
+            print(outputs_new)
+            # 计算底边中点坐标
         return outputs
-
     """
     TODO:
         Convert bbox from xc_yc_w_h to xtl_ytl_w_h
@@ -90,6 +98,7 @@ class DeepSort(object):
         x2 = min(int(x+w), self.width - 1)
         y1 = max(int(y), 0)
         y2 = min(int(y+h), self.height - 1)
+
         return x1, y1, x2, y2
 
     def increment_ages(self):
